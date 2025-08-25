@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -53,7 +54,18 @@ func main() {
 		}
 
 		pinger.Count = 3
+		pinger.Timeout = 5 * time.Second
 		err = pinger.Run()
+		if err != nil {
+			log.Println("Ping failed:", err)
+		} else {
+			stats := pinger.Statistics()
+			if stats.PacketsRecv == 0 {
+				// No responses within timeout → treat as failure
+				log.Printf("Ping timeout: no reply from %s within %v", host, pinger.Timeout)
+				err = fmt.Errorf("ping timeout")
+			}
+		}
 		if err != nil {
 			log.Println("Ping failed:", err)
 			client := hcloud.NewClient(hcloud.WithToken(token))
