@@ -4,7 +4,7 @@ go 1.24.6
 
 require (
 	github.com/hetznercloud/hcloud-go/v2 v2.22.0
-	github.com/prometheus-community/pro-bing v0.7.0
+	github.com/prometheus-community/pro-bing v0.9.1
 	github.com/spf13/viper v1.20.1
 )
 
